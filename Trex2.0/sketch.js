@@ -19,22 +19,26 @@ function preload(){
   
   groundImage = loadImage("ground2.png");
   
-  cloudImage = loadImage("cloud.png");
+  cloudImage = loadImage("nuve.png");
   
-  obstacle1 = loadImage("obstacle1.png");
-  obstacle2 = loadImage("obstacle2.png");
-  obstacle3 = loadImage("obstacle3.png");
-  obstacle4 = loadImage("obstacle4.png");
-  obstacle5 = loadImage("obstacle5.png");
-  obstacle6 = loadImage("obstacle6.png");
+  obstacle1 = loadImage("cactus1.png");
+  obstacle2 = loadImage("cactus2.png");
+  obstacle3 = loadImage("cactus3.png");
+  obstacle4 = loadImage("cactus4.png");
+  obstacle5 = loadImage("cactus5.png");
+  obstacle6 = loadImage("cactus6.png");
   
   gameOverImg = loadImage("gameOver.png");
   restartImg = loadImage("restart.png");
+
+  diaI=loadImage("dia.jpg");
+  nocheI=loadImage("noche.jpg");
 }
 
 function setup() {
   createCanvas(windowWidth, 200);
-  
+  background("#c68767");
+    image(diaI,windowWidth/2,windowHeight/2,windowWidth,200);
   trex = createSprite(50,180,20,50);
   
   trex.addAnimation("running", trex_running);
@@ -59,7 +63,7 @@ function setup() {
   restart.visible = false;
   
   invisibleGround = createSprite(200,190,600,10);
-  //invisibleGround.visible = false;
+  invisibleGround.visible = false;
   
   cloudsGroup = new Group();
   obstaclesGroup = new Group();
@@ -70,12 +74,13 @@ function setup() {
 function draw() {
   //trex.debug = true;
   background(255);
+  text(mouseX+","+mouseY,mouseX+10,mouseY);
   text("Puntuación: "+ score, windowWidth-200,50);
-  camera.position.x= trex.x      
-  camera.position.y=windowHeight/2
+  camera.position.x= trex.x +windowWidth/3 ;
+  
   
   if (gameState===PLAY){
-    score = score + Math.round(getFrameRate()/60);
+    score = score + Math.round(getFrameRate()/30);
     trex.velocityX = (6 + 3*score/100);
   
     if(keyDown("space") && trex.y >= 159) {
@@ -127,10 +132,10 @@ function draw() {
 function spawnClouds() {
   //escribe el código aquí para aparecer las nubes
   if (frameCount % 60 === 0) {
-    var cloud = createSprite(trex.x+150,120,40,10);
+    var cloud = createSprite(trex.x+150,100,40,10);
     cloud.y = Math.round(random(80,120));
     cloud.addImage(cloudImage);
-    cloud.scale = 0.5;
+    cloud.scale = 0.1;
   
     
      //asigna ciclo de vida a la variable
@@ -140,6 +145,7 @@ function spawnClouds() {
     cloud.depth = trex.depth;
     trex.depth = trex.depth + 1;
     
+    
     //agrega cada nube al grupo
     cloudsGroup.add(cloud);
   }
@@ -148,7 +154,7 @@ function spawnClouds() {
 
 function spawnObstacles() {
   if(frameCount % 60 === 0) {
-    var obstacle = createSprite(trex.x+150,165,10,40);
+    var obstacle = createSprite(trex.x+150,160,10,40);
     //obstacle.debug = true;
   
     
@@ -171,8 +177,9 @@ function spawnObstacles() {
     }
     
     //asigna escala y ciclo de vida al obstáculo           
-    obstacle.scale = 0.5;
+    obstacle.scale = 0.1;
     obstacle.lifetime = 300;
+  
     //agrega cada obstáculo al grupo
     obstaclesGroup.add(obstacle);
   }
